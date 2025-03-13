@@ -1,45 +1,66 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Button, FlatList, Text, TextInput, View } from 'react-native';
 
 export default function App() {
-  const [n, setN] = useState(0)
+  
+  const [nome, setNome] = useState('') 
+  const [itens, setItens] = useState([])
 
-  const podeZerar = n != 0
-  const podeDecrementar = n > 0
-  const podeIncrementar = n < 10
+  //const comprados = itens.filter(item => item.comprado).length
+  const comprados = itens.reduce((prev, atual)=>prev + (atual.comprado ? 1:0), 0)
 
-  const zerar = () => podeZerar && setN(0)
-  const decrementar = () => podeDecrementar && setN(n-1)
-  const incrementar = () => podeIncrementar && setN(n+1)
+console.log(itens)
+
+  const add = () => setItens(prev => [...prev, {nome, comprado: false}])
+
+  const toggle = (i) => setItens(prev => prev.map((item, index) => (
+    index !== i ? item : {...item, comprado: !item.comprado}
+  )))
+   
 
   return (
     <View style={styles.container}>
-      <Text style={styles.texto}>Contador de cliques: {n}</Text>
-      <View style={styles.buttonGroup}>
-        <Button disabled={!podeZerar} title='Zerar' onPress={zerar} />
-        <Button disabled={!podeDecrementar} title='Decrementar' onPress={decrementar} />
-        <Button disabled={!podeIncrementar} title='Incrementar' onPress={incrementar} />
+      <Text style={styles.title}>Lista de Compras</Text>
+      
+      <View style={styles.form}>
+        <TextInput
+          style={styles.input}
+          value={nome}
+          onChangeText={setNome}
+        />
+        <Button onPress={add} title='Adicionar'/>
       </View>
+
+      <FlatList
+        data={itens}
+        renderItem={({item, index}) => {
+          return (
+          <View style={styles.group}>
+            <Text style={[{color:'blue'}, {fontSize: 20}]}>
+              {item.nome}
+            </Text>
+            <Button onPress={() => toggle(index)} title={item.comprado?'Comprado': 'Não comprado'}/>
+          </View>
+          )
+        }
+          
+        }
+      />
+      <Text>Situação {comprados} / {itens.length} </Text>
       <StatusBar style="auto" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  texto: {
-    color: 'red',
-    fontWeight: 900,
-    fontFamily: 'arial',
-    fontSize: 20
-  },
-  buttonGroup: {
-    flexDirection: 'row'
-  },
+  form: {flexDirection: 'row'},
+  group: {borderWidth:1, flexDirection: 'row', gap: 10},
+  input: {borderWidth: 1, height: 50, padding: 15},
   container: {
     flex: 1,
-    backgroundColor: '#ccc',
+    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 });
