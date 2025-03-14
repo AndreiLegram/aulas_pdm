@@ -1,0 +1,20 @@
+Exercícios
+
+1) Criar uma tela de boas-vindas.
+Exibir um texto de boas-vindas e o nome do usuário vindo de um estado (useState).
+Um botão para alterar o nome, abrindo um TextInput.
+
+2) Contador simples
+Criar um contador com botões incrementar e decrementar
+Exibir o valor atual e impedir que ele fique abaixo de 0
+
+3) Alteração do tema (dark/light mode)
+Criar dois temas (claro e escuro) usando useState;
+Mudar as cores da interface ao alternar entre os temas.
+
+4) Cronômetro simples
+Criar um Cronômetro que inicia e para com um botão
+exibir o tempo decorrido em segundos.
+
+5) Gerador de números aleatórios
+Criar um botão que gera e exibe um número aleatório entre 1 e 100.
